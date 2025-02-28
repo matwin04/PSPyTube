@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PSP Video Manager</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .delete-btn { color: red; border: none; background: none; cursor: pointer; }
+        .edit-btn { color: blue; border: none; background: none; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h2>Upload Media</h2>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="video" required>
+        <select name="category" id="category">
+            <option value="Video">Video</option>
+            <option value="TV Show">TV Show</option>
+            <option value="Movie">Movie</option>
+        </select>
+
+        <div id="tvshow_fields" style="display:none;">
+            Show Name: <input type="text" name="showname">
+            Season: <input type="number" name="season">
+            Episode: <input type="number" name="episode">
+        </div>
+
+        <div id="movie_fields" style="display:none;">
+            Movie Title: <input type="text" name="movie_title">
+        </div>
+
+        <input type="submit" value="Upload">
+    </form>
+
+    <h2>Available Videos</h2>
+    <table>
+        <tr>
+            <th>Filename</th>
+            <th>Download</th>
+            <th>Upload Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        % for video in videos:
+        <tr>
+            <td>{{ video['original_filename'] }}</td>
+            <td><a href="/videos/{{ video['filename'] }}">Download</a></td>
+            <td>{{ video['upload_date'] }}</td>
+            <td><a href="/edit/video/{{ video['id'] }}" class="edit-btn">✏️ Edit</a></td>
+            <td>
+                <form action="/delete/Video/{{ video['id'] }}" method="post">
+                    <button type="submit" class="delete-btn">❌</button>
+                </form>
+            </td>
+        </tr>
+        % end
+    </table>
+
+    <h2>Available TV Shows</h2>
+    <table>
+        <tr>
+            <th>Show</th>
+            <th>Season</th>
+            <th>Episode</th>
+            <th>Download</th>
+            <th>Upload Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        % for tv in tvshows:
+        <tr>
+            <td>{{ tv['showname'] }}</td>
+            <td>{{ tv['season'] }}</td>
+            <td>{{ tv['episode'] }}</td>
+            <td><a href="/tvshows/{{ tv['showname'] }}/season{{ tv['season'] }}/{{ tv['filename'] }}">Download</a></td>
+            <td>{{ tv['upload_date'] }}</td>
+            <td><a href="/edit/tv/{{ tv['id'] }}" class="edit-btn">✏️ Edit</a></td>
+            <td>
+                <form action="/delete/TV Show/{{ tv['id'] }}" method="post">
+                    <button type="submit" class="delete-btn">❌</button>
+                </form>
+            </td>
+        </tr>
+        % end
+    </table>
+
+    <h2>Available Movies</h2>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Download</th>
+            <th>Upload Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        % for movie in movies:
+        <tr>
+            <td>{{ movie['title'] }}</td>
+            <td><a href="/movies/{{ movie['filename'] }}">Download</a></td>
+            <td>{{ movie['upload_date'] }}</td>
+            <td><a href="/edit/movie/{{ movie['id'] }}" class="edit-btn">✏️ Edit</a></td>
+            <td>
+                <form action="/delete/Movie/{{ movie['id'] }}" method="post">
+                    <button type="submit" class="delete-btn">❌</button>
+                </form>
+            </td>
+        </tr>
+        % end
+    </table>
+
+    <p>Access from PSP Browser: <strong>http://{{ip}}:8080/</strong></p>
+
+    <script>
+        document.getElementById('category').addEventListener('change', function() {
+            document.getElementById('tvshow_fields').style.display = this.value === 'TV Show' ? 'block' : 'none';
+            document.getElementById('movie_fields').style.display = this.value === 'Movie' ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>

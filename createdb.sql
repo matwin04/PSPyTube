@@ -1,0 +1,24 @@
+CREATE TABLE IF NOT EXISTS videos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_filename TEXT NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS tvshows (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_filename TEXT NOT NULL,
+    showname TEXT NOT NULL,
+    season INTEGER NOT NULL,
+    episode INTEGER NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS movies (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    original_filename TEXT NOT NULL,
+    title TEXT NOT NULL,
+    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
